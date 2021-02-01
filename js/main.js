@@ -1,32 +1,34 @@
 'use strict';
 
-const calculateDiffMinMax = (min, max) => {
+const getRandomNumber = (min, max, maxInclusive = 0) => {
   const diff = max - min;
 
-  if (diff <= 0) {
-    throw new Error('Значение min не должно быть меньшее или равно max');
+  if (min < 0 || max < 0) {
+    throw new Error(`Значения min(${min}) и max(${max}) не должны быть отрицательными`);
   }
 
-  return diff;
+  if (diff < 0) {
+    throw new Error(`Значение max(${max}) не должно быть меньше min(${min})`);
+  }
+
+  return (diff === 0) ? min : Math.random() * (diff + maxInclusive) + min;
 };
 
-const getRandomInt = (min, max) => {
-  min = Math.floor(Math.abs(min));
-  max = Math.floor(Math.abs(max));
+const getRandomInt= (min, max) => {
+  if (!Number.isInteger(min) || !Number.isInteger(max)) {
+    throw new Error(`Значения min(${min}) и max(${max}) должны быть целочисленными`);
+  }
 
-  const diff = calculateDiffMinMax(min, max) + 1;
+  const randomNumber = getRandomNumber(min, max, 1);
 
-  return Math.floor(Math.random() * diff) + min;
+  return Math.floor(randomNumber);
 };
 
 const getRandomFloat = (min, max, numberSigns = 2) => {
-  min = Math.abs(min);
-  max = Math.abs(max);
-
-  const diff = calculateDiffMinMax(min, max);
+  const randomNumber = getRandomNumber(min, max);
   const numberRank = 10 ** numberSigns;
 
-  return Math.floor((Math.random() * diff + min) * numberRank) / numberRank;
+  return Math.floor(randomNumber * numberRank) / numberRank;
 };
 
 alert(`
