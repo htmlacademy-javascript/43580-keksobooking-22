@@ -14,7 +14,7 @@ const getRandomNumber = (min, max, maxInclusive = 0) => {
   return (diff === 0) ? min : Math.random() * (diff + maxInclusive) + min;
 };
 
-const getRandomInt= (min, max) => {
+const getRandomInt = (min, max) => {
   if (!Number.isInteger(min) || !Number.isInteger(max)) {
     throw new Error(`Значения min(${min}) и max(${max}) должны быть целочисленными`);
   }
