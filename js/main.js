@@ -24,9 +24,9 @@ const getRandomInt = (min, max) => {
   return Math.floor(randomNumber);
 };
 
-const getRandomFloat = (min, max, numberSigns = 2) => {
+const getRandomFloat = (min, max, digits = 2) => {
   const randomNumber = getRandomNumber(min, max);
-  const numberRank = 10 ** numberSigns;
+  const numberRank = 10 ** digits;
 
   return Math.floor(randomNumber * numberRank) / numberRank;
 };
@@ -60,7 +60,7 @@ const Coords = {
   MAX_X: 35.70000,
   MIN_Y: 139.70000,
   MAX_Y: 139.80000,
-  SIGNS_COUNT: 5,
+  DIGITS: 5,
 };
 
 const titles = [
@@ -118,8 +118,8 @@ const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)
 const getRandomArrayObjects = (amount, pushObject) => new Array(amount).fill(null).map(() => pushObject());
 
 const createAd = () => {
-  const coordX = getRandomFloat(Coords.MIN_X, Coords.MAX_X, Coords.SIGNS_COUNT);
-  const coordY = getRandomFloat(Coords.MIN_Y, Coords.MAX_Y, Coords.SIGNS_COUNT);
+  const coordX = getRandomFloat(Coords.MIN_X, Coords.MAX_X, Coords.DIGITS);
+  const coordY = getRandomFloat(Coords.MIN_Y, Coords.MAX_Y, Coords.DIGITS);
 
   return {
     author: {
