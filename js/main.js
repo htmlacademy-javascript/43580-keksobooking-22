@@ -63,7 +63,7 @@ const Coords = {
   DIGITS: 5,
 };
 
-const titles = [
+const TITLES = [
   'Уединенное местечко близ Пика Прыжок Барда',
   'Рукой подать до Руин Бталфта (в этом городе находилась легендарная кузница этерия)',
   'Апартаменты в Солитьюде (не Поместье Высокий шпиль)',
@@ -74,20 +74,20 @@ const titles = [
   'Знаешь толк в магии? Коллегия Винтерхолда идеальный вариант',
 ];
 
-const accommodationTypes = [
+const ACCOMMODATION_TYPES = [
   'palace',
   'flat',
   'house',
   'bungalow',
 ];
 
-const registrationTime = [
+const REGISTRATION_TIME = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const features = [
+const FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -96,7 +96,7 @@ const features = [
   'conditioner',
 ];
 
-const descriptions = [
+const DESCRIPTIONS = [
   'Слава Ситису!',
   'Комфортное жилье в самом центре крупнейшего процветающего города, расположенного во владении Хаафингар. В пешей доступности различные лавки и таверна Смеющаяся крыса.',
   'Находится в лагере изгоев — в оплоте Потерянная Долина. Здесь имеется несколько красивых водопадов, обрушивающих свои воды вниз.',
@@ -107,40 +107,65 @@ const descriptions = [
   'Не упускайте возможность провести незабываемый романтический уикенд. Здесь можно посетить храм Мары, богини любви. В этом достаточно известном храме проводятся обряды бракосочетания и излечения болезней, есть возможность приобрести амулеты.',
 ];
 
-const photos = [
+const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
-const getRandomArray = (array) => array.slice(getRandomInt(0, array.length));
-const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)];
-const getRandomArrayObjects = (amount, pushObject) => new Array(amount).fill(null).map(() => pushObject());
+const getRandomArrayElement = (array) => {
+  const length = array.length - 1;
+  const index = (length >= 0) ? getRandomInt(0, length) : 0;
+
+  return array[index];
+};
+
+const getRandomArray = (array, amount = array.length) => {
+  const length = array.length;
+
+  if (amount > length || amount < 0) {
+    throw new Error(`Значение amount(${amount}) не должно быть отрицательным и больше array.length(${length})`);
+  }
+
+  const copyArray = array.slice();
+  const newArray = [];
+
+  while (newArray.length < amount) {
+    const index = getRandomInt(0, length - 1);
+    const element = copyArray.splice(index, 1);
+
+    newArray.push(...element);
+  }
+
+  return newArray;
+};
+
+const getRandomArrayObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
 const createAd = () => {
-  const coordX = getRandomFloat(Coords.MIN_X, Coords.MAX_X, Coords.DIGITS);
-  const coordY = getRandomFloat(Coords.MIN_Y, Coords.MAX_Y, Coords.DIGITS);
+  const COORD_X = getRandomFloat(Coords.MIN_X, Coords.MAX_X, Coords.DIGITS);
+  const COORD_Y = getRandomFloat(Coords.MIN_Y, Coords.MAX_Y, Coords.DIGITS);
 
   return {
     author: {
       avatar: `img/avatars/user0${getRandomInt(AvatarCount.MIN, AvatarCount.MAX)}.png`,
     },
     offer: {
-      title: getRandomArrayElement(titles),
-      address: `${coordX}, ${coordY}`,
+      title: getRandomArrayElement(TITLES),
+      address: `${COORD_X}, ${COORD_Y}`,
       price: getRandomInt(PriceRange.MIN, PriceRange.MAX),
-      type: getRandomArrayElement(accommodationTypes),
+      type: getRandomArrayElement(ACCOMMODATION_TYPES),
       rooms: getRandomInt(RoomCount.MIN, RoomCount.MAX),
       guests: getRandomInt(GuestCount.MIN, GuestCount.MAX),
-      checkin: getRandomArrayElement(registrationTime),
-      checkout: getRandomArrayElement(registrationTime),
-      features: getRandomArray(features),
-      description: getRandomArrayElement(descriptions),
-      photos: getRandomArray(photos),
+      checkin: getRandomArrayElement(REGISTRATION_TIME),
+      checkout: getRandomArrayElement(REGISTRATION_TIME),
+      features: getRandomArray(FEATURES, getRandomInt(0, FEATURES.length)),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: getRandomArray(PHOTOS, getRandomInt(0, PHOTOS.length)),
     },
     location: {
-      x: coordX,
-      y: coordY,
+      x: COORD_X,
+      y: COORD_Y,
     },
   }
 };
