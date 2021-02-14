@@ -1,3 +1,29 @@
+const PluralWords = {
+  ROOM: [
+    'комната',
+    'комнаты',
+    'комнат',
+  ],
+  GUST: [
+    'гостя',
+    'гостей',
+    'гостей',
+  ],
+};
+
+const pluralizeWord = (key, count = 1) => {
+  const array = PluralWords[key];
+  let element = array[0];
+
+  if (count > 1 && count < 5) {
+    element = array[1];
+  } else if (count >= 5) {
+    element = array[2];
+  }
+
+  return `${count} ${element}`;
+};
+
 const getRandomNumber = (min, max, maxInclusive = 0) => {
   const diff = max - min;
 
@@ -58,4 +84,33 @@ const getRandomArray = (array, amount = array.length) => {
 
 const getRandomArrayObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects};
+const getListElements = (element, list, change) => {
+  const fragment = document.createDocumentFragment();
+
+  for (let value of list) {
+    const copyElement = element.cloneNode(true);
+
+    if (change) {
+      change(copyElement, value);
+    }
+
+    fragment.append(copyElement);
+  }
+
+  return fragment;
+};
+
+const renderListElements = (container, element, data, change) => {
+  if (data.length === 0) {
+    container.remove();
+
+    return false;
+  }
+
+  const list = getListElements(element, data, change);
+
+  element.remove();
+  container.append(list);
+};
+
+export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects, renderListElements, pluralizeWord};
