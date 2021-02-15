@@ -84,33 +84,4 @@ const getRandomArray = (array, amount = array.length) => {
 
 const getRandomArrayObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
-const getListElements = (element, list, change) => {
-  const fragment = document.createDocumentFragment();
-
-  for (let value of list) {
-    const copyElement = element.cloneNode(true);
-
-    if (change) {
-      change(copyElement, value);
-    }
-
-    fragment.append(copyElement);
-  }
-
-  return fragment;
-};
-
-const renderListElements = (container, element, data, change) => {
-  if (data.length === 0) {
-    container.remove();
-
-    return false;
-  }
-
-  const list = getListElements(element, data, change);
-
-  element.remove();
-  container.append(list);
-};
-
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects, renderListElements, pluralizeWord};
+export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects, pluralizeWord};
