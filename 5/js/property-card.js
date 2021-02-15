@@ -1,4 +1,4 @@
-import {renderListElements, pluralizeWord} from './utils.js';
+import {pluralizeWord} from './utils.js';
 
 const typeList = {
   flat: 'Квартира',
@@ -7,12 +7,47 @@ const typeList = {
   palace: 'Дворец',
 };
 
-const changeAttrFeature = (element, value) => {
-  element.classList.add(`popup__feature--${value}`);
+const renderListElements = (element, array, change) => {
+  const getListElements = () => {
+    const fragment = document.createDocumentFragment();
+
+    for (let value of array) {
+      const copyElement = element.cloneNode(true);
+
+      change(copyElement, value);
+
+      fragment.append(copyElement);
+    }
+
+    return fragment;
+  };
+
+  const container = element.parentElement;
+
+  if (array.length === 0) {
+    container.remove();
+
+    return false;
+  }
+
+  element.remove();
+  container.append(getListElements());
 };
 
-const changeAttrPhoto = (element, value) => {
-  element.setAttribute('src', value);
+const renderListFeatures = (element, array) => {
+  const changeAttrFeature = (element, value) => {
+    element.classList.add(`popup__feature--${value}`);
+  };
+
+  renderListElements(element, array, changeAttrFeature);
+};
+
+const renderListPhotos = (element, array) => {
+  const changeAttrPhoto = (element, value) => {
+    element.setAttribute('src', value);
+  };
+
+  renderListElements(element, array, changeAttrPhoto);
 };
 
 const createPropertyCard = ({author, offer}) => {
@@ -26,13 +61,8 @@ const createPropertyCard = ({author, offer}) => {
   const capacity = template.querySelector('.popup__text--capacity');
   const time = template.querySelector('.popup__text--time');
   const description = template.querySelector('.popup__description');
-
-  const features = template.querySelector('.popup__features');
-  const featureItem = features.querySelector('.popup__feature');
-
-  const photos = template.querySelector('.popup__photos');
-  const photoItem = photos.querySelector('.popup__photo');
-
+  const feature = template.querySelector('.popup__feature');
+  const photo = template.querySelector('.popup__photo');
   const avatar = template.querySelector('.popup__avatar');
 
   title.textContent = offer.title;
@@ -43,9 +73,10 @@ const createPropertyCard = ({author, offer}) => {
   time.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   description.textContent = offer.description;
 
-  renderListElements(features, featureItem, offer.features, changeAttrFeature);
-  renderListElements(photos, photoItem, offer.photos, changeAttrPhoto);
-  changeAttrPhoto(avatar, author.avatar);
+  renderListFeatures(feature, offer.features);
+  renderListPhotos(photo, offer.photos);
+
+  avatar.setAttribute('src', author.avatar);
 
   return template;
 };
