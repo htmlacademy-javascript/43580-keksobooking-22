@@ -7,47 +7,30 @@ const typeList = {
   palace: 'Дворец',
 };
 
-const renderListElements = (element, array, change) => {
-  const getListElements = () => {
-    const fragment = document.createDocumentFragment();
+const createOfferFeatures = (feature, typeFeatures) => {
+  const fragment = document.createDocumentFragment();
 
-    for (let value of array) {
-      const copyElement = element.cloneNode(true);
+  for (let type of typeFeatures) {
+    const featureCopy = feature.cloneNode(true);
 
-      change(copyElement, value);
-
-      fragment.append(copyElement);
-    }
-
-    return fragment;
-  };
-
-  const container = element.parentElement;
-
-  if (array.length === 0) {
-    container.remove();
-
-    return false;
+    featureCopy.classList.add(`popup__feature--${type}`);
+    fragment.appendChild(featureCopy);
   }
 
-  element.remove();
-  container.append(getListElements());
+  return fragment;
 };
 
-const renderListFeatures = (element, array) => {
-  const changeAttrFeature = (element, value) => {
-    element.classList.add(`popup__feature--${value}`);
-  };
+const createOfferPhotos = (photo, linkPhotos) => {
+  const fragment = document.createDocumentFragment();
 
-  renderListElements(element, array, changeAttrFeature);
-};
+  for (let link of linkPhotos) {
+    const photoCopy = photo.cloneNode(true);
 
-const renderListPhotos = (element, array) => {
-  const changeAttrPhoto = (element, value) => {
-    element.setAttribute('src', value);
-  };
+    photoCopy.src = link;
+    fragment.appendChild(photoCopy);
+  }
 
-  renderListElements(element, array, changeAttrPhoto);
+  return fragment;
 };
 
 const createPropertyCard = ({author, offer}) => {
@@ -69,14 +52,13 @@ const createPropertyCard = ({author, offer}) => {
   address.textContent = offer.address;
   price.textContent = `${offer.price} ₽/ночь`;
   type.textContent = typeList[offer.type];
-  capacity.textContent = `${pluralizeWord('ROOM', offer.rooms)} для ${pluralizeWord('GUST', offer.guests)}`;
+  capacity.textContent = `${pluralizeWord('ROOM', offer.rooms)} для ${pluralizeWord('GUEST', offer.guests)}`;
   time.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   description.textContent = offer.description;
+  avatar.src = author.avatar;
 
-  renderListFeatures(feature, offer.features);
-  renderListPhotos(photo, offer.photos);
-
-  avatar.setAttribute('src', author.avatar);
+  feature.replaceWith(createOfferFeatures(feature, offer.features));
+  photo.replaceWith(createOfferPhotos(photo, offer.photos));
 
   return template;
 };
