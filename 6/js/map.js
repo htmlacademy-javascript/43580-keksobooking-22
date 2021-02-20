@@ -12,7 +12,7 @@ const ZOOM_START = 13;
 const adList = getRandomArrayObjects(NUMBER_ADS, createAd);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
@@ -24,7 +24,7 @@ const mainMarker = L.marker(INITIAL_COORDS, {
 });
 
 const defaultPinIcon = L.icon({
-  iconUrl: '../img/pin.svg',
+  iconUrl: './img/pin.svg',
   iconSize: [36, 36],
   iconAnchor: [18, 36],
 });
