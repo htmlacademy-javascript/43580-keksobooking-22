@@ -1,10 +1,10 @@
 const filterForm = document.querySelector('.map__filters');
-const filterList = filterForm.children;
+const filterChildren = filterForm.children;
 
 const disableFilterForm = () => {
   filterForm.classList.add('map__filters--disabled');
 
-  for (let filter of filterList) {
+  for (let filter of filterChildren) {
     filter.disabled = true;
   }
 };
@@ -12,11 +12,9 @@ const disableFilterForm = () => {
 const enableFilterForm = () => {
   filterForm.classList.remove('map__filters--disabled');
 
-  for (let filter of filterList) {
+  for (let filter of filterChildren) {
     filter.disabled = false;
   }
 };
 
-disableFilterForm();
-
-export {enableFilterForm};
+export {enableFilterForm, disableFilterForm};
