@@ -11,11 +11,6 @@ const PluralWords = {
   ],
 };
 
-const INITIAL_COORDS = {
-  lat: 35.68951,
-  lng: 139.69171,
-};
-
 const pluralizeWord = (key, count = 1) => {
   const array = PluralWords[key];
   let element = array[0];
@@ -87,6 +82,6 @@ const getRandomArray = (array, amount = array.length) => {
   return newArray;
 };
 
-const getRandomArrayObjects = (amount, generator) => [...Array(amount)].map(() => generator());
+const getRandomObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects, pluralizeWord, INITIAL_COORDS};
+export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomObjects, pluralizeWord};
