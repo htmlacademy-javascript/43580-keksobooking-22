@@ -1,4 +1,4 @@
-const DIGITS = 5;
+const ADDRESS_DIGITS = 5;
 
 const priceList = {
   bungalow: 0,
@@ -8,8 +8,7 @@ const priceList = {
 };
 
 const adForm = document.querySelector('.ad-form');
-const fieldsetList = adForm.children;
-
+const fieldsetChildren = adForm.children;
 const fieldAddress = adForm.querySelector('#address');
 const fieldPrice = adForm.querySelector('#price');
 const fieldType = adForm.querySelector('#type');
@@ -19,7 +18,7 @@ const fieldTimeout = adForm.querySelector('#timeout');
 const disableAdForm = () => {
   adForm.classList.add('ad-form--disabled');
 
-  for (let fieldset of fieldsetList) {
+  for (let fieldset of fieldsetChildren) {
     fieldset.disabled = true;
   }
 };
@@ -27,13 +26,13 @@ const disableAdForm = () => {
 const enableAdForm = () => {
   adForm.classList.remove('ad-form--disabled');
 
-  for (let fieldset of fieldsetList) {
+  for (let fieldset of fieldsetChildren) {
     fieldset.disabled = false;
   }
 };
 
 const setAddress = ({lat, lng}) => {
-  fieldAddress.value = `${lat.toFixed(DIGITS)}, ${lng.toFixed(DIGITS)}`;
+  fieldAddress.value = `${lat.toFixed(ADDRESS_DIGITS)}, ${lng.toFixed(ADDRESS_DIGITS)}`;
 };
 
 fieldType.addEventListener('change', () => {
@@ -51,6 +50,4 @@ fieldTimeout.addEventListener('change', () => {
   fieldTimein.value = fieldTimeout.value;
 });
 
-disableAdForm();
-
-export {enableAdForm, setAddress};
+export {enableAdForm, disableAdForm, setAddress};
