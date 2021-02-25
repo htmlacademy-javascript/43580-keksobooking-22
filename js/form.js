@@ -29,25 +29,25 @@ const enableAdForm = () => {
   for (let fieldset of fieldsetChildren) {
     fieldset.disabled = false;
   }
+
+  fieldType.addEventListener('change', () => {
+    const price = priceList[fieldType.value];
+
+    fieldPrice.min = price;
+    fieldPrice.placeholder = price;
+  });
+
+  fieldTimein.addEventListener('change', () => {
+    fieldTimeout.value = fieldTimein.value;
+  });
+
+  fieldTimeout.addEventListener('change', () => {
+    fieldTimein.value = fieldTimeout.value;
+  });
 };
 
 const setAddress = ({lat, lng}) => {
   fieldAddress.value = `${lat.toFixed(ADDRESS_DIGITS)}, ${lng.toFixed(ADDRESS_DIGITS)}`;
 };
-
-fieldType.addEventListener('change', () => {
-  const price = priceList[fieldType.value];
-
-  fieldPrice.min = price;
-  fieldPrice.placeholder = price;
-});
-
-fieldTimein.addEventListener('change', () => {
-  fieldTimeout.value = fieldTimein.value;
-});
-
-fieldTimeout.addEventListener('change', () => {
-  fieldTimein.value = fieldTimeout.value;
-});
 
 export {enableAdForm, disableAdForm, setAddress};
