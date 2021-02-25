@@ -82,6 +82,6 @@ const getRandomArray = (array, amount = array.length) => {
   return newArray;
 };
 
-const getRandomArrayObjects = (amount, generator) => [...Array(amount)].map(() => generator());
+const getRandomObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomArrayObjects, pluralizeWord};
+export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomObjects, pluralizeWord};

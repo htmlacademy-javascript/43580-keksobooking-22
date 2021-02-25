@@ -1,9 +1,13 @@
-import {getRandomArrayObjects} from './utils.js';
+import {getRandomObjects} from './utils.js';
 import {NUMBER_ADS, createAd} from './data.js';
-import createPropertyCard from './property-card.js';
+import {disableFilterForm} from './filter.js';
+import {disableAdForm} from './form.js';
+import {initializeMap, addMapMainMarker, addMapMarkers} from './map.js';
 
-const dataList = getRandomArrayObjects(NUMBER_ADS, createAd);
-const card = createPropertyCard(dataList[0]);
+const ads = getRandomObjects(NUMBER_ADS, createAd);
 
-const map = document.querySelector('#map-canvas');
-map.append(card);
+disableAdForm();
+disableFilterForm();
+initializeMap();
+addMapMainMarker();
+addMapMarkers(ads);
