@@ -100,7 +100,7 @@ const checkCapacityRooms = () => {
     fieldRoomNumber.setCustomValidity(strError);
   }
 
-  fieldCapacity.reportValidity();
+  fieldRoomNumber.reportValidity();
 };
 
 const checkFileType = (field) => {
