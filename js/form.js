@@ -1,4 +1,18 @@
 import {pluralizeWord} from './utils.js';
+import {sendData} from './api.js';
+import {resetFilterForm} from './filter.js';
+
+import {
+  INITIAL_COORDS,
+  resetCoordsMainMarker,
+  disableMapMainMarker,
+  enableMapMainMarker
+} from './map.js';
+
+import {
+  Templates,
+  showMessage
+} from './message.js';
 
 const ADDRESS_DIGITS = 5;
 
@@ -78,10 +92,49 @@ const enableAdForm = () => {
   fieldPhoto.addEventListener('change', (evt) => {
     checkFileType(evt.target);
   });
+
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    disableMapMainMarker();
+
+    adForm.classList.add('ad-form--load');
+
+    sendData(
+      () => {
+        submitAd(Templates.OK);
+        resetAdForm();
+      },
+      submitAd,
+      new FormData(evt.target),
+    );
+  });
+
+  adForm.addEventListener('reset', () => {
+    resetAdForm();
+  });
 };
 
 const setAddress = ({lat, lng}) => {
   fieldAddress.value = `${lat.toFixed(ADDRESS_DIGITS)}, ${lng.toFixed(ADDRESS_DIGITS)}`;
+};
+
+const submitAd = (name) => {
+  showMessage(name);
+  enableMapMainMarker();
+
+  adForm.classList.remove('ad-form--load');
+};
+
+const resetAdForm = () => {
+  adForm.reset();
+
+  resetFilterForm();
+  resetCoordsMainMarker();
+
+  setTimeout(() => {
+    setAddress(INITIAL_COORDS);
+  }, 0);
 };
 
 const checkCapacityRooms = () => {
@@ -95,9 +148,9 @@ const checkCapacityRooms = () => {
   if (flagCapacity) {
     fieldRoomNumber.setCustomValidity('');
   } else {
-    const strError = `Вариант размещения ${(roomNumber === '100') ? 'не для гостей' : 'вместимостью до ' + pluralizeWord('GUEST', maxGuests)}`;
+    const textError = `Вариант размещения ${(roomNumber === '100') ? 'не для гостей' : 'вместимостью до ' + pluralizeWord('GUEST', maxGuests)}`;
 
-    fieldRoomNumber.setCustomValidity(strError);
+    fieldRoomNumber.setCustomValidity(textError);
   }
 
   fieldRoomNumber.reportValidity();
@@ -116,4 +169,8 @@ const checkFileType = (field) => {
   field.reportValidity();
 };
 
-export {enableAdForm, disableAdForm, setAddress};
+export {
+  enableAdForm,
+  disableAdForm,
+  setAddress
+};

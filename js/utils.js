@@ -84,4 +84,14 @@ const getRandomArray = (array, amount = array.length) => {
 
 const getRandomObjects = (amount, generator) => [...Array(amount)].map(() => generator());
 
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, getRandomObjects, pluralizeWord};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+export {
+  getRandomInt,
+  getRandomFloat,
+  getRandomArrayElement,
+  getRandomArray,
+  getRandomObjects,
+  pluralizeWord,
+  isEscEvent
+};

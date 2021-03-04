@@ -1,13 +1,34 @@
-import {getRandomObjects} from './utils.js';
-import {NUMBER_ADS, createAd} from './data.js';
-import {disableFilterForm} from './filter.js';
+import {getData} from './api.js';
 import {disableAdForm} from './form.js';
-import {initializeMap, addMapMainMarker, addMapMarkers} from './map.js';
 
-const ads = getRandomObjects(NUMBER_ADS, createAd);
+import {
+  disableFilterForm,
+  enableFilterForm
+} from './filter.js';
+
+import {
+  Templates,
+  showMessage
+} from './message.js';
+
+import {
+  initializeMap,
+  addMapMainMarker,
+  addMapMarkers
+} from './map.js';
 
 disableAdForm();
 disableFilterForm();
+
 initializeMap();
 addMapMainMarker();
-addMapMarkers(ads);
+
+getData(
+  (data) => {
+    addMapMarkers(data);
+    enableFilterForm();
+  },
+  () => {
+    showMessage(Templates.FAILED);
+  },
+);

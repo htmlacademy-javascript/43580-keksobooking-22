@@ -17,4 +17,12 @@ const enableFilterForm = () => {
   }
 };
 
-export {enableFilterForm, disableFilterForm};
+const resetFilterForm = () => {
+  filterForm.reset();
+};
+
+export {
+  enableFilterForm,
+  disableFilterForm,
+  resetFilterForm
+};

@@ -1,4 +1,9 @@
-import {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray} from './utils.js';
+import {
+  getRandomInt,
+  getRandomFloat,
+  getRandomArrayElement,
+  getRandomArray
+} from './utils.js';
 
 const NUMBER_ADS = 10;
 
@@ -108,4 +113,7 @@ const createAd = () => {
   }
 };
 
-export {NUMBER_ADS, createAd};
+export {
+  NUMBER_ADS,
+  createAd
+};
