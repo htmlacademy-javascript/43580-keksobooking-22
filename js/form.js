@@ -1,5 +1,5 @@
 import {pluralizeWord} from './utils.js';
-import {sendData} from './api.js';
+import {sendAdFormData} from './api.js';
 import {resetFilterForm} from './filter.js';
 
 import {
@@ -100,7 +100,7 @@ const enableAdForm = () => {
 
     adForm.classList.add('ad-form--load');
 
-    sendData(
+    sendAdFormData(
       () => {
         submitAd(Templates.OK);
         resetAdForm();
