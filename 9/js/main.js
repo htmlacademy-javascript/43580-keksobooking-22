@@ -1,4 +1,4 @@
-import {getData} from './api.js';
+import {getAdsData} from './api.js';
 import {disableAdForm} from './form.js';
 
 import {
@@ -23,7 +23,7 @@ disableFilterForm();
 initializeMap();
 addMapMainMarker();
 
-getData(
+getAdsData(
   (data) => {
     addMapMarkers(data);
     enableFilterForm();
