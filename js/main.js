@@ -28,7 +28,5 @@ getAdsData(
     addMapMarkers(data);
     enableFilterForm();
   },
-  () => {
-    showMessage(Templates.FAILED);
-  },
+  () => showMessage(Templates.FAILED),
 );
