@@ -62,6 +62,11 @@ const enableAdForm = () => {
     fieldset.disabled = false;
   }
 
+  fieldRoomNumber.addEventListener('change', checkCapacityRooms);
+  fieldCapacity.addEventListener('change', checkCapacityRooms);
+  fieldAvatar.addEventListener('change', checkFileType);
+  fieldPhoto.addEventListener('change', checkFileType);
+
   fieldType.addEventListener('change', () => {
     const price = priceList[fieldType.value];
 
@@ -77,22 +82,6 @@ const enableAdForm = () => {
     fieldTimein.value = fieldTimeout.value;
   });
 
-  fieldRoomNumber.addEventListener('change', () => {
-    checkCapacityRooms();
-  });
-
-  fieldCapacity.addEventListener('change', () => {
-    checkCapacityRooms();
-  });
-
-  fieldAvatar.addEventListener('change', (evt) => {
-    checkFileType(evt.target);
-  });
-
-  fieldPhoto.addEventListener('change', (evt) => {
-    checkFileType(evt.target);
-  });
-
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -105,14 +94,12 @@ const enableAdForm = () => {
         submitAd(Templates.OK);
         resetAdForm();
       },
-      submitAd,
+      () => submitAd(Templates.ERROR),
       new FormData(evt.target),
     );
   });
 
-  adForm.addEventListener('reset', () => {
-    resetAdForm();
-  });
+  adForm.addEventListener('reset', resetAdForm);
 };
 
 const setAddress = ({lat, lng}) => {
@@ -156,7 +143,8 @@ const checkCapacityRooms = () => {
   fieldRoomNumber.reportValidity();
 };
 
-const checkFileType = (field) => {
+const checkFileType = (evt) => {
+  const field = evt.target;
   const type = field.files[0].type;
   const flagType = FILE_FORMATS.includes(type);
 

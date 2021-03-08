@@ -10,11 +10,7 @@ const createMessage = (name) => {
   const templateFragment = document.querySelector('#' + name).content;
   const template = templateFragment.querySelector('.' + name).cloneNode(true);
 
-  const onMessageEscKeydown = (evt) => {
-    if (isEscEvent(evt)) {
-      closeMessage();
-    }
-  };
+  const onMessageEscKeydown = (evt) => isEscEvent(evt) ? closeMessage() : false;
 
   const closeMessage = () => {
     template.remove();
@@ -27,7 +23,7 @@ const createMessage = (name) => {
   return template;
 };
 
-const showMessage = (name = Templates.ERROR) => {
+const showMessage = (name) => {
   const template = createMessage(name);
 
   document.querySelector('main').appendChild(template);

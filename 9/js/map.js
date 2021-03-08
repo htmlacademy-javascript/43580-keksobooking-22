@@ -60,9 +60,7 @@ const setCoordsMainMarker = (evt) => {
   setAddress(location);
 };
 
-const resetCoordsMainMarker = () => {
-  mainMarker.setLatLng(INITIAL_COORDS);
-};
+const resetCoordsMainMarker = () => mainMarker.setLatLng(INITIAL_COORDS);
 
 const disableMapMainMarker = () => {
   mainMarker.dragging.disable();
