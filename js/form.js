@@ -1,4 +1,18 @@
 import {pluralizeWord} from './utils.js';
+import {sendAdFormData} from './api.js';
+import {resetFilterForm} from './filter.js';
+
+import {
+  INITIAL_COORDS,
+  resetCoordsMainMarker,
+  disableMapMainMarker,
+  enableMapMainMarker
+} from './map.js';
+
+import {
+  Templates,
+  showMessage
+} from './message.js';
 
 const ADDRESS_DIGITS = 5;
 
@@ -48,6 +62,11 @@ const enableAdForm = () => {
     fieldset.disabled = false;
   }
 
+  fieldRoomNumber.addEventListener('change', checkCapacityRooms);
+  fieldCapacity.addEventListener('change', checkCapacityRooms);
+  fieldAvatar.addEventListener('change', checkFileType);
+  fieldPhoto.addEventListener('change', checkFileType);
+
   fieldType.addEventListener('change', () => {
     const price = priceList[fieldType.value];
 
@@ -63,25 +82,46 @@ const enableAdForm = () => {
     fieldTimein.value = fieldTimeout.value;
   });
 
-  fieldRoomNumber.addEventListener('change', () => {
-    checkCapacityRooms();
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    disableMapMainMarker();
+
+    adForm.classList.add('ad-form--load');
+
+    sendAdFormData(
+      () => {
+        submitAd(Templates.OK);
+        resetAdForm();
+      },
+      () => submitAd(Templates.ERROR),
+      new FormData(evt.target),
+    );
   });
 
-  fieldCapacity.addEventListener('change', () => {
-    checkCapacityRooms();
-  });
-
-  fieldAvatar.addEventListener('change', (evt) => {
-    checkFileType(evt.target);
-  });
-
-  fieldPhoto.addEventListener('change', (evt) => {
-    checkFileType(evt.target);
-  });
+  adForm.addEventListener('reset', resetAdForm);
 };
 
 const setAddress = ({lat, lng}) => {
   fieldAddress.value = `${lat.toFixed(ADDRESS_DIGITS)}, ${lng.toFixed(ADDRESS_DIGITS)}`;
+};
+
+const submitAd = (name) => {
+  showMessage(name);
+  enableMapMainMarker();
+
+  adForm.classList.remove('ad-form--load');
+};
+
+const resetAdForm = () => {
+  adForm.reset();
+
+  resetFilterForm();
+  resetCoordsMainMarker();
+
+  setTimeout(() => {
+    setAddress(INITIAL_COORDS);
+  }, 0);
 };
 
 const checkCapacityRooms = () => {
@@ -95,15 +135,16 @@ const checkCapacityRooms = () => {
   if (flagCapacity) {
     fieldRoomNumber.setCustomValidity('');
   } else {
-    const strError = `Вариант размещения ${(roomNumber === '100') ? 'не для гостей' : 'вместимостью до ' + pluralizeWord('GUEST', maxGuests)}`;
+    const textError = `Вариант размещения ${(roomNumber === '100') ? 'не для гостей' : 'вместимостью до ' + pluralizeWord('GUEST', maxGuests)}`;
 
-    fieldRoomNumber.setCustomValidity(strError);
+    fieldRoomNumber.setCustomValidity(textError);
   }
 
   fieldRoomNumber.reportValidity();
 };
 
-const checkFileType = (field) => {
+const checkFileType = (evt) => {
+  const field = evt.target;
   const type = field.files[0].type;
   const flagType = FILE_FORMATS.includes(type);
 
@@ -116,4 +157,8 @@ const checkFileType = (field) => {
   field.reportValidity();
 };
 
-export {enableAdForm, disableAdForm, setAddress};
+export {
+  enableAdForm,
+  disableAdForm,
+  setAddress
+};

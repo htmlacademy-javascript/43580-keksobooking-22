@@ -268,6 +268,27 @@ fieldset {
   opacity: 0.3;
 }
 
+.ad-form--load {
+  position: relative;
+  opacity: 0.3;
+}
+
+.ad-form--load::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+
+  background-image: url("../img/icon-load.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100px auto;
+}
+
 .ad-form-header {
   width: 100%;
   padding-bottom: 20px;
@@ -926,7 +947,7 @@ fieldset {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 2000;
 
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
