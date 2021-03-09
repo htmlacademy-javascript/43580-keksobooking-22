@@ -119,9 +119,7 @@ const resetAdForm = () => {
   resetFilterForm();
   resetCoordsMainMarker();
 
-  setTimeout(() => {
-    setAddress(INITIAL_COORDS);
-  }, 0);
+  setTimeout(() => setAddress(INITIAL_COORDS));
 };
 
 const checkCapacityRooms = () => {
