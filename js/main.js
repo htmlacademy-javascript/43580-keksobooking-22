@@ -14,7 +14,8 @@ import {
 import {
   initializeMap,
   addMapMainMarker,
-  addMapMarkers
+  addMapMarkers,
+  refreshMapMarkers
 } from './map.js';
 
 disableAdForm();
@@ -26,7 +27,7 @@ addMapMainMarker();
 getAdsData(
   (data) => {
     addMapMarkers(data);
-    enableFilterForm();
+    enableFilterForm(() => refreshMapMarkers(data));
   },
   () => showMessage(Templates.FAILED),
 );

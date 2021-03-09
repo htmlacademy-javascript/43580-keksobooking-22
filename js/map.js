@@ -2,10 +2,14 @@
 /* eslint no-undef: "error" */
 
 import createPropertyCard from './property-card.js';
+import {filterAds} from './filter.js';
+
 import {
   enableAdForm,
   setAddress
 } from './form.js';
+
+const AD_COUNT = 10;
 
 const INITIAL_COORDS = {
   lat: 35.68951,
@@ -15,7 +19,7 @@ const INITIAL_COORDS = {
 const MARKER_ZINDEX = 1000;
 
 const MapSettings = {
-  ZOOM: 13,
+  ZOOM: 10,
   URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   ATTR: {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -36,6 +40,8 @@ const PinsSettings = {
 };
 
 const map = L.map('map-canvas');
+
+const defaultMarkers = L.layerGroup();
 
 const mainPinIcon = L.icon(PinsSettings.MAIN);
 const mainMarker = L.marker(INITIAL_COORDS, {
@@ -81,15 +87,26 @@ const addMapMainMarker = () => {
 
 const addMapMarkers = (ads) => {
   const pinIcon = L.icon(PinsSettings.DEFAULT);
+  const newAds = ads.slice(0, AD_COUNT);
 
-  ads.forEach((ad) => {
+  newAds.forEach((ad) => {
     const card = createPropertyCard(ad);
     const marker = L.marker(ad.location, {
       icon: pinIcon,
     });
 
-    marker.addTo(map).bindPopup(card);
+    marker.bindPopup(card);
+    defaultMarkers.addLayer(marker);
   });
+
+  defaultMarkers.addTo(map);
+};
+
+const refreshMapMarkers = (ads) => {
+  const newAds = ads.filter(filterAds).slice(0, AD_COUNT);
+
+  defaultMarkers.clearLayers();
+  addMapMarkers(newAds);
 };
 
 export {
@@ -99,5 +116,6 @@ export {
   addMapMarkers,
   disableMapMainMarker,
   enableMapMainMarker,
-  resetCoordsMainMarker
+  resetCoordsMainMarker,
+  refreshMapMarkers
 };
