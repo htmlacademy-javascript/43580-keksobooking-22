@@ -1,11 +1,10 @@
-const DEFAULT_OPTION = 'any';
+const ANY_OPTION = 'any';
 
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
 
 const filterForm = document.querySelector('.map__filters');
 const filterChildren = filterForm.children;
-
 const fieldType = filterForm.querySelector('#housing-type');
 const fieldPrice = filterForm.querySelector('#housing-price');
 const fieldRooms = filterForm.querySelector('#housing-rooms');
@@ -33,40 +32,45 @@ const enableFilterForm = (refresh) => {
 
 const resetFilterForm = () => filterForm.reset();
 
-const filterByValue = (field, offerValue) => {
-  const selectedValue = field.value;
-
-  return selectedValue === DEFAULT_OPTION || selectedValue === String(offerValue);
+const filterByValue = ({value}, offer) => {
+  return value === ANY_OPTION ||
+         offer === ((typeof offer === 'number') ? +value : value);
 };
 
-const filterByPrice = (selectedPrice, offerPrice) => {
-  switch (selectedPrice) {
+const filterByPrice = (price) => {
+  switch (fieldPrice.value) {
     case 'low':
-      return offerPrice < LOW_PRICE;
+      return price < LOW_PRICE;
     case 'middle':
-      return offerPrice >= LOW_PRICE && offerPrice <= HIGH_PRICE;
+      return price >= LOW_PRICE && price <= HIGH_PRICE;
     case 'high':
-      return offerPrice > HIGH_PRICE;
-    case 'any':
+      return price > HIGH_PRICE;
+    case ANY_OPTION:
       return true;
   }
 };
 
-const filterByFeatures = (offerFeatures) => {
+const filterByFeatures = (features) => {
   const checkedFeatures = fieldFeatures.querySelectorAll('input:checked');
 
-  return [...checkedFeatures].every((input) => offerFeatures.includes(input.value));
+  return [...checkedFeatures].every((input) => features.includes(input.value));
 };
 
-const filterAds = ({offer}) => {
-  const type = filterByValue(fieldType, offer.type);
-  const price = filterByPrice(fieldPrice.value, offer.price);
-  const rooms = filterByValue(fieldRooms, offer.rooms);
-  const guests = filterByValue(fieldGuests, offer.guests);
-  const features = filterByFeatures(offer.features);
+const filterAds = (ads) => ads.filter((ad) => {
+  const {
+    type,
+    price,
+    rooms,
+    guests,
+    features,
+  } = ad.offer;
 
-  return type && price && rooms && guests && features;
-};
+  return filterByValue(fieldType, type) &&
+         filterByPrice(price) &&
+         filterByValue(fieldRooms, rooms) &&
+         filterByValue(fieldGuests, guests) &&
+         filterByFeatures(features);
+});
 
 export {
   enableFilterForm,

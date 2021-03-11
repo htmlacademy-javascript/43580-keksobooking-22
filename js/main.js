@@ -3,7 +3,8 @@ import {disableAdForm} from './form.js';
 
 import {
   disableFilterForm,
-  enableFilterForm
+  enableFilterForm,
+  filterAds
 } from './filter.js';
 
 import {
@@ -15,8 +16,10 @@ import {
   initializeMap,
   addMapMainMarker,
   addMapMarkers,
-  refreshMapMarkers
+  removeMapMarkers
 } from './map.js';
+
+const AD_COUNT = 10;
 
 disableAdForm();
 disableFilterForm();
@@ -26,8 +29,13 @@ addMapMainMarker();
 
 getAdsData(
   (data) => {
-    addMapMarkers(data);
-    enableFilterForm(() => refreshMapMarkers(data));
+    addMapMarkers(data.slice(0, AD_COUNT));
+
+    enableFilterForm(() => {
+      removeMapMarkers();
+
+      addMapMarkers(filterAds(data).slice(0, AD_COUNT));
+    });
   },
   () => showMessage(Templates.FAILED),
 );

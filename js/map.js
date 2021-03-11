@@ -2,14 +2,11 @@
 /* eslint no-undef: "error" */
 
 import createPropertyCard from './property-card.js';
-import {filterAds} from './filter.js';
 
 import {
   enableAdForm,
   setAddress
 } from './form.js';
-
-const AD_COUNT = 10;
 
 const INITIAL_COORDS = {
   lat: 35.68951,
@@ -87,9 +84,8 @@ const addMapMainMarker = () => {
 
 const addMapMarkers = (ads) => {
   const pinIcon = L.icon(PinsSettings.DEFAULT);
-  const newAds = ads.slice(0, AD_COUNT);
 
-  newAds.forEach((ad) => {
+  ads.forEach((ad) => {
     const card = createPropertyCard(ad);
     const marker = L.marker(ad.location, {
       icon: pinIcon,
@@ -102,12 +98,7 @@ const addMapMarkers = (ads) => {
   defaultMarkers.addTo(map);
 };
 
-const refreshMapMarkers = (ads) => {
-  const newAds = ads.filter(filterAds).slice(0, AD_COUNT);
-
-  defaultMarkers.clearLayers();
-  addMapMarkers(newAds);
-};
+const removeMapMarkers = () => defaultMarkers.clearLayers();
 
 export {
   INITIAL_COORDS,
@@ -117,5 +108,5 @@ export {
   disableMapMainMarker,
   enableMapMainMarker,
   resetCoordsMainMarker,
-  refreshMapMarkers
+  removeMapMarkers
 };
