@@ -2,6 +2,7 @@
 /* eslint no-undef: "error" */
 
 import createPropertyCard from './property-card.js';
+
 import {
   enableAdForm,
   setAddress
@@ -15,7 +16,7 @@ const INITIAL_COORDS = {
 const MARKER_ZINDEX = 1000;
 
 const MapSettings = {
-  ZOOM: 13,
+  ZOOM: 10,
   URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   ATTR: {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -36,6 +37,8 @@ const PinsSettings = {
 };
 
 const map = L.map('map-canvas');
+
+const defaultMarkers = L.layerGroup();
 
 const mainPinIcon = L.icon(PinsSettings.MAIN);
 const mainMarker = L.marker(INITIAL_COORDS, {
@@ -88,9 +91,14 @@ const addMapMarkers = (ads) => {
       icon: pinIcon,
     });
 
-    marker.addTo(map).bindPopup(card);
+    marker.bindPopup(card);
+    defaultMarkers.addLayer(marker);
   });
+
+  defaultMarkers.addTo(map);
 };
+
+const removeMapMarkers = () => defaultMarkers.clearLayers();
 
 export {
   INITIAL_COORDS,
@@ -99,5 +107,6 @@ export {
   addMapMarkers,
   disableMapMainMarker,
   enableMapMainMarker,
-  resetCoordsMainMarker
+  resetCoordsMainMarker,
+  removeMapMarkers
 };
