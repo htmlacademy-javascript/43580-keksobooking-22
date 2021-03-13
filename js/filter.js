@@ -27,7 +27,7 @@ const enableFilterForm = (refresh) => {
   }
 
   filterForm.addEventListener('change', refresh);
-  filterForm.addEventListener('reset', () => setTimeout(refresh));
+  filterForm.addEventListener('reset', refresh);
 };
 
 const resetFilterForm = () => filterForm.reset();
@@ -38,7 +38,9 @@ const filterByValue = ({value}, offer) => {
 };
 
 const filterByPrice = (price) => {
-  switch (fieldPrice.value) {
+  const selectedPrice = fieldPrice.value;
+
+  switch (selectedPrice) {
     case 'low':
       return price < LOW_PRICE;
     case 'middle':
@@ -47,6 +49,8 @@ const filterByPrice = (price) => {
       return price > HIGH_PRICE;
     case ANY_OPTION:
       return true;
+    default:
+      throw new Error(`Неизвестное значение: ${selectedPrice}`);
   }
 };
 
