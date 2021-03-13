@@ -86,6 +86,18 @@ const getRandomObjects = (amount, generator) => [...Array(amount)].map(() => gen
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
+const debounce = (cb, timeout) => {
+  let lastTimeout = null;
+
+  return (evt) => {
+    if (lastTimeout) {
+      clearTimeout(lastTimeout);
+    }
+
+    lastTimeout = setTimeout(cb, timeout, evt);
+  };
+};
+
 export {
   getRandomInt,
   getRandomFloat,
@@ -93,5 +105,6 @@ export {
   getRandomArray,
   getRandomObjects,
   pluralizeWord,
-  isEscEvent
+  isEscEvent,
+  debounce
 };

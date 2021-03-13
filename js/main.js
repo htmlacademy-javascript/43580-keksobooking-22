@@ -1,3 +1,4 @@
+import {debounce} from './utils.js';
 import {getAdsData} from './api.js';
 import {disableAdForm} from './form.js';
 
@@ -20,6 +21,7 @@ import {
 } from './map.js';
 
 const AD_COUNT = 10;
+const RERENDER_DELAY = 500;
 
 disableAdForm();
 disableFilterForm();
@@ -31,11 +33,11 @@ getAdsData(
   (data) => {
     addMapMarkers(data.slice(0, AD_COUNT));
 
-    enableFilterForm(() => {
+    enableFilterForm(debounce(() => {
       removeMapMarkers();
 
       addMapMarkers(filterAds(data).slice(0, AD_COUNT));
-    });
+    }, RERENDER_DELAY));
   },
   () => showMessage(Templates.FAILED),
 );
